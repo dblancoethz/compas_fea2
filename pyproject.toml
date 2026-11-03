@@ -51,6 +51,9 @@ optional-dependencies = { dev = { file = "requirements-dev.txt" } }
 [tool.setuptools.packages.find]
 where = ["src"]
 
+[tool.setuptools.package-data]
+compas_fea2 = ["units/*.txt"]
+
 # ============================================================================
 # replace pytest.ini
 # ============================================================================
