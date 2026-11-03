@@ -122,14 +122,18 @@ class NodeResult(Result):
     """
 
     def __init__(self, node, x=None, y=None, z=None, xx=None, yy=None, zz=None, **kwargs):
+        # The results database names the rotational components rx, ry, rz
+        # (see NodeFieldResults.components_names); accept them as aliases.
+        # They take priority, because subclasses pass xx/yy/zz defaults of 0.0.
+        rx, ry, rz = kwargs.pop("rx", None), kwargs.pop("ry", None), kwargs.pop("rz", None)
         super(NodeResult, self).__init__(**kwargs)
         self._registration = node
         self._x = x
         self._y = y
         self._z = z
-        self._xx = xx
-        self._yy = yy
-        self._zz = zz
+        self._xx = rx if rx is not None else xx
+        self._yy = ry if ry is not None else yy
+        self._zz = rz if rz is not None else zz
 
     @property
     def x(self):

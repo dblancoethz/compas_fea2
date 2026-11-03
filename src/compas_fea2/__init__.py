@@ -73,11 +73,14 @@ def set_backend(plugin):
     import importlib
 
     global BACKEND
-    BACKEND = plugin
     try:
-        importlib.import_module(plugin)._register_backend()
-    except ImportError:
-        print("backend plugin not found. Make sure that you have installed it before.")
+        module = importlib.import_module(plugin)
+    except ModuleNotFoundError as e:
+        if e.name == plugin:
+            raise ImportError("Backend plugin '{}' not found. Make sure that you have installed it before.".format(plugin)) from e
+        raise  # the plugin exists but one of its own imports failed: show the real error
+    module._register_backend()
+    BACKEND = plugin
 
 
 def _get_backend_implementation(cls):

@@ -257,11 +257,13 @@ class Node(FEAData):
     def connected_elements(self) -> List:
         return self._connected_elements
 
-    # @property
-    # def loads(self) -> Dict:
-    #     problems = self.model.problems
-    #     steps = [problem.step for problem in problems]
-    #     return {step: step.loads(step) for step in steps}
+    @property
+    def loads(self) -> Dict:
+        """Factored loads applied to the node, as ``{step: {combination: {load_field: load}}}``.
+
+        Filled in when a load combination is assigned to a step.
+        """
+        return self._loads
 
     def transform(self, transformation):
         """Transform the node using a transformation matrix.

@@ -26,6 +26,13 @@ class TestNode(unittest.TestCase):
         node = Node([1, 2, 3])
         self.assertIsNotNone(node.gkey)
 
+    def test_loads(self):
+        # used by Step.combination to store the factored loads
+        node = Node([1, 2, 3])
+        self.assertEqual(node.loads, {})
+        node.loads.setdefault("step", {})["combination"] = 1.0
+        self.assertEqual(node.loads, {"step": {"combination": 1.0}})
+
     def test_from_compas_point(self):
         point = Point(1, 2, 3)
         node = Node.from_compas_point(point)
